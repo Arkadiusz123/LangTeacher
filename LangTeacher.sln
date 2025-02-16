@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35208.52
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangTeacher.Server", "LangTeacher.Server\LangTeacher.Server.csproj", "{B33E3BD6-C4C8-4ADF-BCB4-4C483437A71D}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "langteacher.client", "langteacher.client\langteacher.client.esproj", "{2602929B-C03C-4028-A734-C8E2207CFEED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B33E3BD6-C4C8-4ADF-BCB4-4C483437A71D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B33E3BD6-C4C8-4ADF-BCB4-4C483437A71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B33E3BD6-C4C8-4ADF-BCB4-4C483437A71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B33E3BD6-C4C8-4ADF-BCB4-4C483437A71D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2602929B-C03C-4028-A734-C8E2207CFEED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2602929B-C03C-4028-A734-C8E2207CFEED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2602929B-C03C-4028-A734-C8E2207CFEED}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2602929B-C03C-4028-A734-C8E2207CFEED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2602929B-C03C-4028-A734-C8E2207CFEED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2602929B-C03C-4028-A734-C8E2207CFEED}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB9197E6-864D-47B0-AC86-BA67172601EA}
+	EndGlobalSection
+EndGlobal
