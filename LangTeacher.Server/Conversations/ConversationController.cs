@@ -5,9 +5,19 @@ namespace LangTeacher.Server.Conversations
     [ApiController, Route("api/conversations")]
     public class ConversationController : ControllerBase
     {
-        public ActionResult GetResponse([FromBody]GetResponseRequest request)
+        private readonly IConversationService _conversationService;
+
+        public ConversationController(IConversationService conversationService)
         {
-            return null;
+            _conversationService = conversationService;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> GetResponse([FromBody]GetResponseRequest request)
+        {
+            var result = await _conversationService.GetResponseAsync(request);
+
+            return Ok(result);
         }
     }
 }

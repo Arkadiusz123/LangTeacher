@@ -3,5 +3,6 @@
     public class GetResponseRequest
     {
         public required string Text { get; set; }
+        public int? ConversationId { get; set; }
     }
 }
