@@ -13,7 +13,7 @@ namespace LangTeacher.Server.Conversations
             };
         }
 
-        public static Message ToChatMessage(this AppMessage appMessage)
+        public static Message ToOllamaChatMessage(this AppMessage appMessage)
         {
             return new Message(new ChatRole(appMessage.Role), appMessage.Content);
         }

@@ -1,5 +1,6 @@
 ﻿using LangTeacher.Server.Conversations;
 using LangTeacher.Server.Database;
+using LangTeacher.Server.Services.ChatService;
 using Microsoft.EntityFrameworkCore;
 using OllamaSharp;
 
@@ -17,6 +18,7 @@ namespace LangTeacher.Server.Configs
 
             services.AddScoped<IConversationService, ConversationService>();
             services.AddScoped<IConversationRepository, ConversationRepository>();
+            services.AddScoped<IChatService, OllamaService>();
 
             services.AddSingleton<OllamaApiClient>(provider =>
             {
