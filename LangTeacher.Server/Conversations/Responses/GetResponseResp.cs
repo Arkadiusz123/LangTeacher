@@ -2,7 +2,7 @@
 {
     public class GetResponseResp
     {
-        public required int ConverstaionId { get; set; }
+        public required int ConversationId { get; set; }
         public required string Response { get; set; }
     }
 }

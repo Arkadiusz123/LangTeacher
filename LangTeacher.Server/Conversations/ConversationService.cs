@@ -43,7 +43,7 @@ namespace LangTeacher.Server.Conversations
 
             var resp = new GetResponseResp
             {
-                ConverstaionId = conv.ConversationId,
+                ConversationId = conv.ConversationId,
                 Response = lastResponse
             };
 
