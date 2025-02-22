@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2>Rozpoznawanie Mowy</h2>
+    <h2>Speech Recognition</h2>
 
-    <label for="language">Wybierz język:</label>
+    <label for="language">Select language:</label>
     <select v-model="selectedLanguage">
       <option value="pl-PL">🇵🇱 Polski</option>
       <option value="en-US">🇬🇧 English</option>
@@ -10,13 +10,14 @@
 
     <button @click="startRecognition" :disabled="isRecognizing">🎤 Start</button>
     <button @click="stopRecognition" :disabled="!isRecognizing">🛑 Stop</button>
+    <button @click="displayResponse = !displayResponse" :disabled="!serverResponse">{{ displayResponse ? 'Hide response' : 'Display response' }}</button>
 
-    <p v-if="recognizedText"><strong>Rozpoznany tekst:</strong> {{ recognizedText }}</p>
+    <p v-if="recognizedText"><strong>Recognized text:</strong> {{ recognizedText }}</p>
 
-    <button v-if="recognizedText" @click="sendTextToBackend" :disabled="isSending">📤 Wyślij tekst</button>
-    <button v-if="serverResponse" @click="speakResponse">🔊 Odczytaj odpowiedź</button>
+    <button v-if="recognizedText" @click="sendTextToBackend" :disabled="isSending">📤 Send text</button>
+    <button v-if="serverResponse" @click="speakResponse">🔊 Read answear</button>
 
-    <p v-if="serverResponse" hidden><strong>Odpowiedź:</strong> {{ serverResponse }}</p>
+    <p v-if="serverResponse" v-show="displayResponse"><strong>Answear:</strong> {{ serverResponse }}</p>
   </div>
 </template>
 
@@ -28,6 +29,7 @@
   const recognizedText = ref('');
   const isRecognizing = ref(false);
   const isSending = ref(false);
+  const displayResponse = ref(false);
   const conversationId = ref(null);
   const serverResponse = ref('');
   const selectedLanguage = ref('en-US'); // Domyślnie polski
