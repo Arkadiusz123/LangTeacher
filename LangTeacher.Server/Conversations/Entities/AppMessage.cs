@@ -8,6 +8,6 @@
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 
         public int ConversationId { get; set; }
-        public Conversation Conversation { get; set; } = new Conversation();
+        public Conversation Conversation { get; set; }
     }
 }

@@ -6,6 +6,7 @@ namespace LangTeacher.Server.Conversations
     public interface IConversationService
     {
         Task<GetResponseResp> GetResponseAsync(GetResponseRequest request);
+        Task<IEnumerable<ConversationResponse>> GetConversations();
     }
 
     public class ConversationService : IConversationService
@@ -44,10 +45,17 @@ namespace LangTeacher.Server.Conversations
             var resp = new GetResponseResp
             {
                 ConversationId = conv.ConversationId,
+                Title = conv.Title,
                 Response = lastResponse
             };
 
             return resp;
+        }
+
+        public async Task<IEnumerable<ConversationResponse>> GetConversations()
+        {
+            var conversations = await _conversationRepository.GetConversationsAsync();
+            return conversations;
         }
     }
 }

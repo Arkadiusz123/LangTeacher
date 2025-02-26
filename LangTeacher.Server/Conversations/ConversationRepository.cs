@@ -1,4 +1,6 @@
-﻿using LangTeacher.Server.Database;
+﻿using LangTeacher.Server.Conversations.Responses;
+using LangTeacher.Server.Database;
+using LangTeacher.Server.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace LangTeacher.Server.Conversations
@@ -6,7 +8,8 @@ namespace LangTeacher.Server.Conversations
     public interface IConversationRepository
     {
         Task<Conversation> AddMessagesAsync(IEnumerable<AppMessage> messages, int? conversationId);
-        Task<IEnumerable<AppMessage>> GetLastMessagesAsync(int conversationId, int limit = 10);
+        Task<IEnumerable<AppMessage>> GetLastMessagesAsync(int conversationId, int limit = 10);       
+        Task<IEnumerable<ConversationResponse>> GetConversationsAsync();
         Task SaveChangesAsync();
     }
 
@@ -25,7 +28,13 @@ namespace LangTeacher.Server.Conversations
 
             if (conversationId is null) 
             {
-                conversation = new Conversation();
+                var firstMessage = messages.OrderBy(x => x.CreatedAt).First();
+
+                conversation = new Conversation()
+                {
+                    Title = firstMessage.Content.GetConversationTitle()
+                };
+
                 _dbContext.Conversations.Add(conversation);
             }
             else
@@ -47,6 +56,21 @@ namespace LangTeacher.Server.Conversations
                 .ToListAsync();
 
             return messages;
+        }
+
+        public async Task<IEnumerable<ConversationResponse>> GetConversationsAsync()
+        {
+            var query = await _dbContext.Conversations
+                .Select(x => new ConversationResponse
+                {
+                    ConversationId = x.ConversationId,
+                    LastMessageDate = x.AppMessages.Select(y => y.CreatedAt).Max(),
+                    Title = x.Title
+                })
+                .OrderByDescending(x => x.LastMessageDate)
+                .ToListAsync();
+
+            return query;
         }
 
         public async Task SaveChangesAsync()

@@ -6,7 +6,7 @@ import AudioRecorder from '../components/AudioRecorder.vue'
 // Konfiguracja tras (routes)
 const routes = [
   {
-    path: '/audioRecorder',
+    path: '/audio-recorder',
     name: 'audioRecorder',
     component: AudioRecorder,
   },

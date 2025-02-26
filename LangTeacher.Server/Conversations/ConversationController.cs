@@ -12,11 +12,18 @@ namespace LangTeacher.Server.Conversations
             _conversationService = conversationService;
         }
 
-        [HttpPost]
+        [HttpPost("generate-response")]
         public async Task<ActionResult> GetResponse([FromBody]GetResponseRequest request)
         {
             var result = await _conversationService.GetResponseAsync(request);
 
+            return Ok(result);
+        }
+
+        [HttpGet("list")]
+        public async Task<ActionResult> ConversationsList()
+        {
+            var result = await _conversationService.GetConversations();
             return Ok(result);
         }
     }
