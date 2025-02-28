@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LangTeacher.Server.Conversations.Responses;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LangTeacher.Server.Conversations
 {
@@ -12,8 +13,12 @@ namespace LangTeacher.Server.Conversations
             _conversationService = conversationService;
         }
 
+        /// <summary>
+        /// Send your massage and id of conversation, that you wolud like to continue. If empty then new conversation will start.
+        /// As a response, you will get AI reposnse to your message and id of current conversation.
+        /// </summary>
         [HttpPost("generate-response")]
-        public async Task<ActionResult> GetResponse([FromBody]GetResponseRequest request)
+        public async Task<ActionResult<GetResponseResp>> GetResponse([FromBody]GetResponseRequest request)
         {
             var result = await _conversationService.GetResponseAsync(request);
 
@@ -23,8 +28,12 @@ namespace LangTeacher.Server.Conversations
             return Ok(result.Value);
         }
 
+        /// <summary>
+        /// Get list of your conversations
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("list")]
-        public async Task<ActionResult> ConversationsList()
+        public async Task<ActionResult<IEnumerable<ConversationResponse>>> ConversationsList()
         {
             var result = await _conversationService.GetConversations();
             return Ok(result);
