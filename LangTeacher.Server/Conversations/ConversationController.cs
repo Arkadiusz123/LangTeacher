@@ -17,7 +17,10 @@ namespace LangTeacher.Server.Conversations
         {
             var result = await _conversationService.GetResponseAsync(request);
 
-            return Ok(result);
+            if (!result.IsSuccess)
+                return BadRequest(result.Error);
+
+            return Ok(result.Value);
         }
 
         [HttpGet("list")]
