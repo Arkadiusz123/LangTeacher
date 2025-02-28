@@ -1,11 +1,12 @@
 ﻿using LangTeacher.Server.Conversations.Responses;
 using LangTeacher.Server.Services.ChatService;
+using LangTeacher.Server.Shared;
 
 namespace LangTeacher.Server.Conversations
 {
     public interface IConversationService
     {
-        Task<GetResponseResp> GetResponseAsync(GetResponseRequest request);
+        Task<ValueResult<GetResponseResp>> GetResponseAsync(GetResponseRequest request);
         Task<IEnumerable<ConversationResponse>> GetConversations();
     }
 
@@ -20,10 +21,15 @@ namespace LangTeacher.Server.Conversations
             _conversationRepository = conversationRepository;
         }
 
-        public async Task<GetResponseResp> GetResponseAsync(GetResponseRequest request)
+        public async Task<ValueResult<GetResponseResp>> GetResponseAsync(GetResponseRequest request)
         {
             if (request.ConversationId is not null)
             {
+                if (!await _conversationRepository.ConversationExistsAsync(request.ConversationId.Value))
+                {
+                    return ValueResult<GetResponseResp>.Failure($"No conversation with id {request.ConversationId}");
+                }
+
                 var messages = await _conversationRepository.GetLastMessagesAsync(request.ConversationId.Value);
 
                 var appMessages = messages.OrderBy(x => x.CreatedAt);
@@ -49,7 +55,7 @@ namespace LangTeacher.Server.Conversations
                 Response = lastResponse
             };
 
-            return resp;
+            return ValueResult<GetResponseResp>.Success(resp);
         }
 
         public async Task<IEnumerable<ConversationResponse>> GetConversations()

@@ -10,6 +10,7 @@ namespace LangTeacher.Server.Conversations
         Task<Conversation> AddMessagesAsync(IEnumerable<AppMessage> messages, int? conversationId);
         Task<IEnumerable<AppMessage>> GetLastMessagesAsync(int conversationId, int limit = 10);       
         Task<IEnumerable<ConversationResponse>> GetConversationsAsync();
+        Task<bool> ConversationExistsAsync(int id);
         Task SaveChangesAsync();
     }
 
@@ -71,6 +72,11 @@ namespace LangTeacher.Server.Conversations
                 .ToListAsync();
 
             return query;
+        }
+
+        public async Task<bool> ConversationExistsAsync(int id)
+        {
+            return await _dbContext.Conversations.AnyAsync(x => x.ConversationId == id);
         }
 
         public async Task SaveChangesAsync()
