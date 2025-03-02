@@ -43,7 +43,7 @@
         </div>
         <div class="text-center mt-2">
           <button @click="speakResponse" class="btn btn-warning">🔊 Read answer</button>
-          <button @click="stopReading" class="btn btn-warning"> Stop reading</button>
+          <button @click="stopReading" class="btn btn-danger"> Stop reading</button>
         </div>
       </div>
     </div>
