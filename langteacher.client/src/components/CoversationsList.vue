@@ -1,24 +1,50 @@
 <template>
   <div class="container mt-4">
-    <h3>Conversations</h3>
 
-    <DataTable class="display responsive nowrap table table-striped"
-               :data="conversationStore.conversations"
-               :columns="columns"
-               :options="options"
-               width="100%" />
-  </div>
+    <!--<h3 class="mb-3">Conversations</h3>-->
+
+    <div class="action-bar">
+      <button class="btn btn-success me-2">Add</button>
+      <button class="btn btn-warning me-2" :disabled="!selectedRow">Edit</button>
+      <button class="btn btn-danger" :disabled="!selectedRow" @click="deleteRow">Remove</button>
+    </div>
+
+      <DataTable class="display responsive nowrap table table-striped"
+                 :data="conversationStore.conversations"
+                 :columns="columns"
+                 :options="options"
+                 ref="table"
+                 width="100%" />
+    </div>
 </template>
 
 <script setup>
-  import { onMounted } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { useConversationStore } from '../services/useConversations';
   import DataTable from "datatables.net-vue3";
+  import { useDateFormat } from '@vueuse/core';
+
+  const conversationStore = useConversationStore();
+
+  let dt = null;
+  const table = ref();
+  const selectedRow = ref(null);
+
+  onMounted(function () {
+    conversationStore.getConversations();
+    dt = table.value.dt;
+
+    dt.on('select', saveSelectedRow);
+    dt.on('deselect', function () { selectedRow.value = null; });
+  });
 
   const columns = [
     { data: 'conversationId', title: 'Id' },
     { data: 'title', title: 'Title' },
-    { data: 'lastMessageDate', title: 'Last message' },
+    {
+      data: 'lastMessageDate', title: 'Last message',
+      render: function (data) { return useDateFormat(data, 'DD/MM/YYYY HH:mm:ss').value; }
+    },
   ];
 
   const options = {
@@ -28,16 +54,38 @@
     },
   };
 
-  const conversationStore = useConversationStore();
+  const saveSelectedRow = () => {
+    const selectedRows = dt.rows({ selected: true });
+    if (!selectedRows.any()) {
+      selectedRow.value = null;
+      return;
+    }
+    selectedRow.value = selectedRows.data()[0].conversationId;
+  };
 
-  onMounted(() => {
-    conversationStore.getConversations();
-  });
+  const deleteRow = () => {
+    console.log(selectedRow.value);
+  }
+
 </script>
 
 <style>
   @import 'datatables.net-responsive-bs5';
   @import 'datatables.net-bs5';
   @import 'datatables.net-select-bs5';
+
+  .container {
+    position: relative; /* Upewnij się, że kontener ma pozycjonowanie */
+  }
+
+  .action-bar {
+    position: sticky;
+    top: 56px; /* Przesunięcie przycisków poniżej navbaru (dostosuj w zależności od wysokości navbaru) */
+    z-index: 1000; /* Zapewnia, że przyciski są nad navbar */
+    background-color: white; /* Tło przycisków, by były widoczne */
+    padding: 5px 0; /* Dostosuj padding wedle potrzeby */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opcjonalnie, aby dodać cień */
+  }
+
 </style>
 
