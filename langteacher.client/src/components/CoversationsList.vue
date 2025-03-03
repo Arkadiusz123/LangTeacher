@@ -1,25 +1,32 @@
 <template>
   <div class="container mt-4">
-    <h3>test conversations</h3>
-    <DataTable :columns="columns"
+    <h3>Conversations</h3>
+
+    <DataTable class="display responsive nowrap table table-striped"
                :data="conversationStore.conversations"
-               :apiUrl="'test'"
-               :pagination="{ page: 1, pageSize: 10 }"
-               :filters="{ }"
-               :serverSide="false" />
-    </div>
+               :columns="columns"
+               :options="options"
+               width="100%" />
+  </div>
 </template>
 
 <script setup>
   import { onMounted } from 'vue';
   import { useConversationStore } from '../services/useConversations';
-  import DataTable from "@/components/DataTable.vue";
+  import DataTable from "datatables.net-vue3";
 
   const columns = [
-    { key: 'title', label: 'Title', sortable: true },
-    { key: 'conversationId', label: 'Id', sortable: true },
-    { key: 'lastMessageDate', label: 'Last message', sortable: true },
-  ]
+    { data: 'conversationId', title: 'Id' },
+    { data: 'title', title: 'Title' },
+    { data: 'lastMessageDate', title: 'Last message' },
+  ];
+
+  const options = {
+    responsive: true,
+    select: {
+      style: "single"
+    },
+  };
 
   const conversationStore = useConversationStore();
 
@@ -27,4 +34,10 @@
     conversationStore.getConversations();
   });
 </script>
+
+<style>
+  @import 'datatables.net-responsive-bs5';
+  @import 'datatables.net-bs5';
+  @import 'datatables.net-select-bs5';
+</style>
 

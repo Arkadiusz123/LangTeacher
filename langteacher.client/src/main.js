@@ -1,8 +1,10 @@
 import './assets/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import PrimeVue from "primevue/config";
-import Aura from "@primeuix/themes/aura"; // Nowy system motywów
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-bs5';
+import 'datatables.net-select-bs5';
+import 'datatables.net-responsive-bs5';
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -16,15 +18,7 @@ const pinia = createPinia();
 app.use(router);
 app.use(pinia);
 
-app.use(PrimeVue, {
-  theme: {
-    preset: Aura, // Ustawienie nowego motywu
-    options: {
-      prefix: "p", // Prefiks klas CSS
-      darkModeSelector: "system", // Tryb ciemny zgodny z systemem
-      cssLayer: false // Możesz ustawić `true`, jeśli chcesz używać warstw CSS
-    }
-  }
-});
+DataTable.use(DataTablesCore);
+app.use(DataTable);
 
 app.mount('#app');
