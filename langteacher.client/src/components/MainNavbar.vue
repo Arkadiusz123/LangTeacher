@@ -34,5 +34,6 @@
 <style scoped>
   .navbar {
     z-index: 1000; /* Zabezpiecza, że navbar będzie zawsze na wierzchu */
+    max-height: 56px;
   }
 </style>

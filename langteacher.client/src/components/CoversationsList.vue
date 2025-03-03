@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-4">
 
-    <!--<h3 class="mb-3">Conversations</h3>-->
+    <h3 class="mb-3">Conversations</h3>
 
     <div class="action-bar">
       <button class="btn btn-success me-2">Add</button>
@@ -64,7 +64,7 @@
   };
 
   const deleteRow = () => {
-    console.log(selectedRow.value);
+    console.log(selectedRow.value);   //todo
   }
 
 </script>
@@ -75,16 +75,16 @@
   @import 'datatables.net-select-bs5';
 
   .container {
-    position: relative; /* Upewnij się, że kontener ma pozycjonowanie */
+    position: relative;
   }
 
   .action-bar {
     position: sticky;
-    top: 56px; /* Przesunięcie przycisków poniżej navbaru (dostosuj w zależności od wysokości navbaru) */
-    z-index: 1000; /* Zapewnia, że przyciski są nad navbar */
-    background-color: white; /* Tło przycisków, by były widoczne */
-    padding: 5px 0; /* Dostosuj padding wedle potrzeby */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opcjonalnie, aby dodać cień */
+    top: 56px;
+    z-index: 1000;
+    background-color: white;
+    padding: 5px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
 
 </style>
