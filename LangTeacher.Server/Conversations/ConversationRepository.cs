@@ -8,7 +8,7 @@ namespace LangTeacher.Server.Conversations
     public interface IConversationRepository
     {
         Task<Conversation> AddMessagesAsync(IEnumerable<AppMessage> messages, int? conversationId);
-        Task<IEnumerable<AppMessage>> GetLastMessagesAsync(int conversationId, int limit = 10);       
+        Task<IEnumerable<AppMessage>> GetLastMessagesAsync(int conversationId, int limit = 20);       
         Task<IEnumerable<ConversationResponse>> GetConversationsAsync();
         Task<bool> ConversationExistsAsync(int id);
         Task SaveChangesAsync();
@@ -47,7 +47,7 @@ namespace LangTeacher.Server.Conversations
             return conversation;
         }
 
-        public async Task<IEnumerable<AppMessage>> GetLastMessagesAsync(int conversationId, int limit = 10) 
+        public async Task<IEnumerable<AppMessage>> GetLastMessagesAsync(int conversationId, int limit = 20) 
         { 
             var messages = await _dbContext.Messages
                 .AsNoTracking()

@@ -14,7 +14,10 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-              <router-link class="nav-link" to="/audio-recorder">Audio recorder</router-link>
+            <router-link class="nav-link" to="/audio-recorder">Audio recorder</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/coversations-list">Conversations</router-link>
           </li>
         </ul>
       </div>
