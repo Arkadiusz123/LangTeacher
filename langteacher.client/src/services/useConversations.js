@@ -34,7 +34,7 @@ export const useConversationStore = defineStore('conversationStore', {
         console.log(error);
         Swal.fire({
           title: "Error!",
-          text: "There was a problem deleting the movie. Please try again.",
+          text: "There was a problem deleting the conversation. Please try again.",
           icon: "error"
         });
       }      
