@@ -70,7 +70,7 @@ namespace LangTeacher.Server.Conversations
             var deleteResult = await _conversationRepository.DeleteAsync(id);
 
             if (!deleteResult)
-                return Result.Failure($"Oonversation with id {id} not found");
+                return Result.Failure($"Conversation with id {id} not found");
 
             return Result.Success();
         }

@@ -118,5 +118,29 @@ namespace LangTeacherTests.Conversations
             Assert.Equal(conversations, result);
             _conversationRepository.Received(1).GetConversationsAsync();
         }
+
+        [Fact]
+        public async Task DeleteConversation_CorrectId_ReturnsSuccess()
+        {
+            _conversationRepository.DeleteAsync(1).Returns(true);
+
+            var deleteResult = await _conversationService.DeleteConversationAsync(1);
+
+            Assert.True(deleteResult.IsSuccess);
+            _conversationRepository.Received(1).DeleteAsync(1);
+        }
+
+        [Fact]
+        public async Task DeleteConversation_WrongId_ReturnsFail()
+        {
+            _conversationRepository.DeleteAsync(1).Returns(false);
+
+            var deleteResult = await _conversationService.DeleteConversationAsync(1);
+
+            Assert.False(deleteResult.IsSuccess);
+            Assert.Equal("Conversation with id 1 not found", deleteResult.Error);
+
+            _conversationRepository.Received(1).DeleteAsync(1);
+        }
     }
 }
