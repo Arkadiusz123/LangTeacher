@@ -7,7 +7,8 @@ namespace LangTeacher.Server.Conversations
     public interface IConversationService
     {
         Task<ValueResult<GetResponseResp>> GetResponseAsync(GetResponseRequest request);
-        Task<IEnumerable<ConversationResponse>> GetConversations();
+        Task<IEnumerable<ConversationResponse>> GetConversationsAsync();
+        Task<Result> DeleteConversationAsync(int id);
     }
 
     public class ConversationService : IConversationService
@@ -58,10 +59,20 @@ namespace LangTeacher.Server.Conversations
             return ValueResult<GetResponseResp>.Success(resp);
         }
 
-        public async Task<IEnumerable<ConversationResponse>> GetConversations()
+        public async Task<IEnumerable<ConversationResponse>> GetConversationsAsync()
         {
             var conversations = await _conversationRepository.GetConversationsAsync();
             return conversations;
+        }
+
+        public async Task<Result> DeleteConversationAsync(int id)
+        {
+            var deleteResult = await _conversationRepository.DeleteAsync(id);
+
+            if (!deleteResult)
+                return Result.Failure($"Conversation with id {id} not found");
+
+            return Result.Success();
         }
     }
 }
