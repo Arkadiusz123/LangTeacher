@@ -11,6 +11,7 @@ namespace LangTeacher.Server.Conversations
         Task<IEnumerable<AppMessage>> GetLastMessagesAsync(int conversationId, int limit = 20);       
         Task<IEnumerable<ConversationResponse>> GetConversationsAsync();
         Task<bool> ConversationExistsAsync(int id);
+        Task<bool> DeleteAsync(int id);
         Task SaveChangesAsync();
     }
 
@@ -77,6 +78,15 @@ namespace LangTeacher.Server.Conversations
         public async Task<bool> ConversationExistsAsync(int id)
         {
             return await _dbContext.Conversations.AnyAsync(x => x.ConversationId == id);
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var deletedCount = await _dbContext.Conversations
+                .Where(x => x.ConversationId == id)
+                .ExecuteDeleteAsync();
+
+            return deletedCount == 1;
         }
 
         public async Task SaveChangesAsync()

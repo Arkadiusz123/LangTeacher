@@ -35,8 +35,23 @@ namespace LangTeacher.Server.Conversations
         [HttpGet("list")]
         public async Task<ActionResult<IEnumerable<ConversationResponse>>> ConversationsList()
         {
-            var result = await _conversationService.GetConversations();
+            var result = await _conversationService.GetConversationsAsync();
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Delete conversation's history by id
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteConversation(int id)
+        {
+            var deleteResult = await _conversationService.DeleteConversationAsync(id);
+
+            if (!deleteResult.IsSuccess)
+                return BadRequest(deleteResult.Error);
+
+            return NoContent();
         }
     }
 }

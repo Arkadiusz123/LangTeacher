@@ -19,6 +19,5 @@ app.use(router);
 app.use(pinia);
 
 DataTable.use(DataTablesCore);
-app.use(DataTable);
 
 app.mount('#app');

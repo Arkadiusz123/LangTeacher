@@ -13,8 +13,7 @@
                width="100%">
 
       <template #column-acts="props">
-        <button class="btn btn-warning me-2" @click="editRow(props.rowData)">Edit</button>
-        <button class="btn btn-danger" @click="deleteRow(props.rowData)">Delete</button>
+        <button class="btn btn-danger" @click="deleteRow(props.rowData.conversationId)">Delete</button>
       </template>
     </DataTable>
   </div>
@@ -26,6 +25,7 @@
   import DataTable from "datatables.net-vue3";
   import DataTablesCore from 'datatables.net';
   import { useDateFormat } from '@vueuse/core';
+  import Swal from 'sweetalert2';
 
   const conversationStore = useConversationStore();
 
@@ -38,7 +38,12 @@
     { data: 'title', title: 'Title' },
     {
       data: 'lastMessageDate', title: 'Last message',
-      render: function (data) { return useDateFormat(data, 'DD/MM/YYYY HH:mm:ss').value; }
+      render: function (data, type) {
+        if (type === "sort" || type === "type") {
+          return data;
+        }
+        return useDateFormat(data, 'DD/MM/YYYY HH:mm:ss').value;
+      }
     },
     { name: 'acts', title: 'Actions', data: null, orderable: false },
   ];
@@ -51,12 +56,21 @@
     }
   };
 
-  const editRow = (data) => {
-    console.log(data);   //todo
-  }
+  const deleteRow = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    });
 
-  const deleteRow = (data) => {
-    console.log(data);   //todo
+    if (!result.isConfirmed) {
+      return;
+    }
+    conversationStore.deleteConversation(id);
   }
 
 </script>

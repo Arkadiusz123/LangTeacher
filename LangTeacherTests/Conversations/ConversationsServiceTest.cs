@@ -113,7 +113,7 @@ namespace LangTeacherTests.Conversations
 
             _conversationRepository.GetConversationsAsync().Returns(conversations);
 
-            var result = await _conversationService.GetConversations();
+            var result = await _conversationService.GetConversationsAsync();
 
             Assert.Equal(conversations, result);
             _conversationRepository.Received(1).GetConversationsAsync();
