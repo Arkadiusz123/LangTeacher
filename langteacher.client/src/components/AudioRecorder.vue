@@ -30,7 +30,7 @@
       </div>
 
       <div v-if="recognizedText" class="alert alert-info">
-        <strong>Recognized text:</strong> {{ recognizedText }}
+        <textarea v-model="recognizedText" class="form-control"></textarea>
       </div>
 
       <div class="d-flex justify-content-center gap-2" v-if="recognizedText">
@@ -55,6 +55,7 @@
   import axios from 'axios';
   import { useConversationStore } from '../services/useConversations';
   import { useDateFormat } from '@vueuse/core';
+  import Swal from 'sweetalert2';
 
   // Zmienne reaktywne
   const recognizedText = ref('');
@@ -98,7 +99,11 @@
         }
       };
     } else {
-      console.error('❌ Web Speech API nie jest obsługiwane w tej przeglądarce.');
+      Swal.fire({
+        title: "Error!",
+        text: "Web Speech API is not supported in your browser.",
+        icon: "error"
+      });
     }
   });
 
@@ -146,10 +151,15 @@
       serverResponse.value = response.data.response;
       conversationId.value = response.data.conversationId; // Zapisywanie ID do kolejnych wiadomości
 
-      console.log('Otrzymana odpowiedź:', response.data);
+      console.log('Response:', response.data);
     }
     catch (error) {
       console.error('Błąd wysyłania tekstu:', error);
+      Swal.fire({
+        title: "Error!",
+        text: "There was an error during sending the text.",
+        icon: "error"
+      });
     }
     finally {
       isSending.value = false;
@@ -161,6 +171,11 @@
   const speakResponse = () => {
     if (!serverResponse.value || serverResponse.value.trim() === '') {
       console.warn('Brak tekstu do odczytania.');
+      Swal.fire({
+        title: "Error!",
+        text: "There was an error during reading the text.",
+        icon: "error"
+      });
       return;
     }
   
