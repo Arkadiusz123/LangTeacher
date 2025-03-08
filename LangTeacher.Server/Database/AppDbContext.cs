@@ -14,8 +14,10 @@ namespace LangTeacher.Server.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AppMessage>().HasOne(x => x.Conversation).WithMany(x => x.AppMessages).HasForeignKey(x => x.ConversationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             base.OnModelCreating(modelBuilder);
-            modelBuilder.HasPostgresExtension("pg_uuidv7");
         }
     }
 }
