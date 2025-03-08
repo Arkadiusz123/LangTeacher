@@ -8,7 +8,7 @@ namespace LangTeacher.Server.Conversations
     {
         Task<ValueResult<GetResponseResp>> GetResponseAsync(GetResponseRequest request);
         Task<IEnumerable<ConversationResponse>> GetConversationsAsync();
-        Task<Result> DeleteConversationAsync(int id);
+        Task<Result> DeleteConversationAsync(Guid id);
     }
 
     public class ConversationService : IConversationService
@@ -65,7 +65,7 @@ namespace LangTeacher.Server.Conversations
             return conversations;
         }
 
-        public async Task<Result> DeleteConversationAsync(int id)
+        public async Task<Result> DeleteConversationAsync(Guid id)
         {
             var deleteResult = await _conversationRepository.DeleteAsync(id);
 

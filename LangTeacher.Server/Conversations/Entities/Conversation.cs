@@ -2,7 +2,7 @@
 {
     public class Conversation
     {
-        public int ConversationId { get; set; }
+        public Guid ConversationId { get; set; } = Guid.CreateVersion7();
         public required string Title { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 

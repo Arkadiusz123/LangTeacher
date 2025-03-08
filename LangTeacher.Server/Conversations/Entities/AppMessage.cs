@@ -2,12 +2,12 @@
 {
     public class AppMessage
     {
-        public int AppMessageId { get; set; }
+        public Guid AppMessageId { get; set; } = Guid.CreateVersion7();
         public required string Role { get; set; }
         public required string Content { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 
-        public int ConversationId { get; set; }
+        public Guid ConversationId { get; set; }
         public Conversation Conversation { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace LangTeacher.Server.Conversations
         /// </summary>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteConversation(int id)
+        public async Task<ActionResult> DeleteConversation(Guid id)
         {
             var deleteResult = await _conversationService.DeleteConversationAsync(id);
 

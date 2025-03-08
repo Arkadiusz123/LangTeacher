@@ -7,11 +7,11 @@ namespace LangTeacher.Server.Conversations
 {
     public interface IConversationRepository
     {
-        Task<Conversation> AddMessagesAsync(IEnumerable<AppMessage> messages, int? conversationId);
-        Task<IEnumerable<AppMessage>> GetLastMessagesAsync(int conversationId, int limit = 20);       
+        Task<Conversation> AddMessagesAsync(IEnumerable<AppMessage> messages, Guid? conversationId);
+        Task<IEnumerable<AppMessage>> GetLastMessagesAsync(Guid conversationId, int limit = 20);       
         Task<IEnumerable<ConversationResponse>> GetConversationsAsync();
-        Task<bool> ConversationExistsAsync(int id);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> ConversationExistsAsync(Guid id);
+        Task<bool> DeleteAsync(Guid id);
         Task SaveChangesAsync();
     }
 
@@ -24,7 +24,7 @@ namespace LangTeacher.Server.Conversations
             _dbContext = dbContext;
         }
 
-        public async Task<Conversation> AddMessagesAsync(IEnumerable<AppMessage> messages, int? conversationId) 
+        public async Task<Conversation> AddMessagesAsync(IEnumerable<AppMessage> messages, Guid? conversationId) 
         {
             Conversation conversation;
 
@@ -48,7 +48,7 @@ namespace LangTeacher.Server.Conversations
             return conversation;
         }
 
-        public async Task<IEnumerable<AppMessage>> GetLastMessagesAsync(int conversationId, int limit = 20) 
+        public async Task<IEnumerable<AppMessage>> GetLastMessagesAsync(Guid conversationId, int limit = 20) 
         { 
             var messages = await _dbContext.Messages
                 .AsNoTracking()
@@ -75,12 +75,12 @@ namespace LangTeacher.Server.Conversations
             return query;
         }
 
-        public async Task<bool> ConversationExistsAsync(int id)
+        public async Task<bool> ConversationExistsAsync(Guid id)
         {
             return await _dbContext.Conversations.AnyAsync(x => x.ConversationId == id);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var deletedCount = await _dbContext.Conversations
                 .Where(x => x.ConversationId == id)
