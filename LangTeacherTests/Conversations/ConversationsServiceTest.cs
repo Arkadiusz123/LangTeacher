@@ -22,23 +22,25 @@ namespace LangTeacherTests.Conversations
         [Fact]
         public async Task GetResponse_WrongConversationId_ReturnsFail()
         {
-            _conversationRepository.ConversationExistsAsync(4).Returns(false);
+            var exampleGuid = Guid.CreateVersion7();
+
+            _conversationRepository.ConversationExistsAsync(exampleGuid).Returns(false);
 
             var request = new GetResponseRequest 
             { 
-                ConversationId = 4,
+                ConversationId = exampleGuid,
                 Text = "test" 
             };
 
             var result = await _conversationService.GetResponseAsync(request);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("No conversation with id 4", result.Error);
+            Assert.Equal($"No conversation with id {exampleGuid}", result.Error);
 
-            _conversationRepository.Received(1).ConversationExistsAsync(4);
-            _conversationRepository.DidNotReceive().GetLastMessagesAsync(Arg.Any<int>());
+            _conversationRepository.Received(1).ConversationExistsAsync(exampleGuid);
+            _conversationRepository.DidNotReceive().GetLastMessagesAsync(Arg.Any<Guid>());
             _chatService.DidNotReceive().SetChatHistory(Arg.Any<IEnumerable<AppMessage>>());
-            _conversationRepository.DidNotReceive().AddMessagesAsync(Arg.Any<IEnumerable<AppMessage>>(), Arg.Any<int?>());
+            _conversationRepository.DidNotReceive().AddMessagesAsync(Arg.Any<IEnumerable<AppMessage>>(), Arg.Any<Guid?>());
             _conversationRepository.DidNotReceive().SaveChangesAsync();
         }
 
@@ -50,7 +52,7 @@ namespace LangTeacherTests.Conversations
                 Title = "test_title"
             };
 
-            _conversationRepository.AddMessagesAsync(Arg.Any<IEnumerable<AppMessage>>(), Arg.Any<int?>()).Returns(conversation);
+            _conversationRepository.AddMessagesAsync(Arg.Any<IEnumerable<AppMessage>>(), Arg.Any<Guid?>()).Returns(conversation);
 
             var request = new GetResponseRequest
             {
@@ -62,53 +64,57 @@ namespace LangTeacherTests.Conversations
 
             Assert.True(result.IsSuccess);
 
-            _conversationRepository.DidNotReceive().ConversationExistsAsync(Arg.Any<int>());
-            _conversationRepository.DidNotReceive().GetLastMessagesAsync(Arg.Any<int>());
+            _conversationRepository.DidNotReceive().ConversationExistsAsync(Arg.Any<Guid>());
+            _conversationRepository.DidNotReceive().GetLastMessagesAsync(Arg.Any<Guid>());
             _chatService.DidNotReceive().SetChatHistory(Arg.Any<IEnumerable<AppMessage>>());
             _chatService.Received(1).GetResponseAsync("test");
-            _conversationRepository.Received(1).AddMessagesAsync(Arg.Any<IEnumerable<AppMessage>>(), Arg.Any<int?>());
+            _conversationRepository.Received(1).AddMessagesAsync(Arg.Any<IEnumerable<AppMessage>>(), Arg.Any<Guid?>());
             _conversationRepository.Received(1).SaveChangesAsync();
         }
 
         [Fact]
         public async Task GetResponse_CorrectDataWithConversationId_ReturnsSuccess()
         {
+            var exampleGuid = Guid.CreateVersion7();
+
             var conversation = new Conversation
             {
                 Title = "test_title",
-                ConversationId = 1
+                ConversationId = exampleGuid
             };
 
-            _conversationRepository.AddMessagesAsync(Arg.Any<IEnumerable<AppMessage>>(), 1).Returns(conversation);
+            _conversationRepository.AddMessagesAsync(Arg.Any<IEnumerable<AppMessage>>(), exampleGuid).Returns(conversation);
 
             var request = new GetResponseRequest
             {
-                ConversationId = 1,
+                ConversationId = exampleGuid,
                 Text = "test"
             };
 
-            _conversationRepository.ConversationExistsAsync(1).Returns(true);
+            _conversationRepository.ConversationExistsAsync(exampleGuid).Returns(true);
 
             var result = await _conversationService.GetResponseAsync(request);           
 
             Assert.True(result.IsSuccess);
-            Assert.Equal(result.Value.ConversationId, 1);
+            Assert.Equal(result.Value.ConversationId, exampleGuid);
 
-            _conversationRepository.Received(1).ConversationExistsAsync(1);
-            _conversationRepository.Received(1).GetLastMessagesAsync(1);
+            _conversationRepository.Received(1).ConversationExistsAsync(exampleGuid);
+            _conversationRepository.Received(1).GetLastMessagesAsync(exampleGuid);
             _chatService.Received(1).SetChatHistory(Arg.Any<IEnumerable<AppMessage>>());
             _chatService.Received(1).GetResponseAsync("test");
-            _conversationRepository.Received(1).AddMessagesAsync(Arg.Any<IEnumerable<AppMessage>>(), 1);
+            _conversationRepository.Received(1).AddMessagesAsync(Arg.Any<IEnumerable<AppMessage>>(), exampleGuid);
             _conversationRepository.Received(1).SaveChangesAsync();
         }
 
         [Fact]
         public async Task GetConversations_ReturnsSuccess()
         {
+            var exampleGuid = Guid.CreateVersion7();
+
             var conversations = new List<ConversationResponse>
             {
-                new ConversationResponse { Title = "test", ConversationId = 1, LastMessageDate = DateTimeOffset.UtcNow },
-                new ConversationResponse { Title = "test2", ConversationId = 2, LastMessageDate = DateTimeOffset.UtcNow.AddSeconds(2) },
+                new ConversationResponse { Title = "test", ConversationId = exampleGuid, LastMessageDate = DateTimeOffset.UtcNow },
+                new ConversationResponse { Title = "test2", ConversationId = exampleGuid, LastMessageDate = DateTimeOffset.UtcNow.AddSeconds(2) },
             };
 
             _conversationRepository.GetConversationsAsync().Returns(conversations);
@@ -122,25 +128,29 @@ namespace LangTeacherTests.Conversations
         [Fact]
         public async Task DeleteConversation_CorrectId_ReturnsSuccess()
         {
-            _conversationRepository.DeleteAsync(1).Returns(true);
+            var exampleGuid = Guid.CreateVersion7();
 
-            var deleteResult = await _conversationService.DeleteConversationAsync(1);
+            _conversationRepository.DeleteAsync(exampleGuid).Returns(true);
+
+            var deleteResult = await _conversationService.DeleteConversationAsync(exampleGuid);
 
             Assert.True(deleteResult.IsSuccess);
-            _conversationRepository.Received(1).DeleteAsync(1);
+            _conversationRepository.Received(1).DeleteAsync(exampleGuid);
         }
 
         [Fact]
         public async Task DeleteConversation_WrongId_ReturnsFail()
         {
-            _conversationRepository.DeleteAsync(1).Returns(false);
+            var exampleGuid = Guid.CreateVersion7();
 
-            var deleteResult = await _conversationService.DeleteConversationAsync(1);
+            _conversationRepository.DeleteAsync(exampleGuid).Returns(false);
+
+            var deleteResult = await _conversationService.DeleteConversationAsync(exampleGuid);
 
             Assert.False(deleteResult.IsSuccess);
-            Assert.Equal("Conversation with id 1 not found", deleteResult.Error);
+            Assert.Equal($"Conversation with id {exampleGuid} not found", deleteResult.Error);
 
-            _conversationRepository.Received(1).DeleteAsync(1);
+            _conversationRepository.Received(1).DeleteAsync(exampleGuid);
         }
     }
 }
