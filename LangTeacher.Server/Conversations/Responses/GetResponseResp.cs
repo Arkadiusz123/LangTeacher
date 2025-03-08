@@ -2,8 +2,8 @@
 {
     public class GetResponseResp
     {
-        /// <example>12</example>
-        public required int ConversationId { get; set; }
+        /// <example>0ea69312-44c4-441d-b256-2d044940deb0</example>
+        public required Guid ConversationId { get; set; }
 
         /// <example>title_example</example>
         public required string Title { get; set; }

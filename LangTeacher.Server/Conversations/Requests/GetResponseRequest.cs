@@ -14,7 +14,7 @@ namespace LangTeacher.Server.Conversations
         /// optional id of conversation, that you wolud like to continue, if empty then start new
         /// </summary>
         /// <example>12</example>
-        public int? ConversationId { get; set; }
+        public Guid? ConversationId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
