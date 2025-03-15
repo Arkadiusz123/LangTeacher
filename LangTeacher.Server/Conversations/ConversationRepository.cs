@@ -45,7 +45,7 @@ namespace LangTeacher.Server.Conversations
             }
             
             conversation.AppMessages.AddRange(messages);
-            await _dbContext.Messages.AddRangeAsync(messages);
+            _dbContext.Messages.AddRange(messages);
 
             return conversation;
         }
