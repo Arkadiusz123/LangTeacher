@@ -43,8 +43,10 @@ namespace LangTeacher.Server.Conversations
             {
                 conversation = await _dbContext.Conversations.SingleOrDefaultAsync(x => x.ConversationId == conversationId);
             }
-
+            
             conversation.AppMessages.AddRange(messages);
+            await _dbContext.Messages.AddRangeAsync(messages);
+
             return conversation;
         }
 
